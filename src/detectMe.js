@@ -7,6 +7,17 @@
 		this.__construct();
 	};
 
+	if(!Array.indexOf){
+		Array.prototype.indexOf = function(obj){
+			for(var i=0; i<this.length; i++){
+				if(this[i]==obj){
+					return i;
+				}
+			}
+			return -1;
+		}
+	}
+
 	var defaults = {
 		debug: false,
 		simulate: false,
@@ -55,15 +66,15 @@
 		 export_detail[full_flash_version]
 		 */
 		/*$.ajax({
-			method:'POST',
-			url: "http://supportdetails.com/?sender_name=Jessica&sender=email@sender.com&recipient=" + this.options.info_recipient,
-			success: $.proxy(function(){
-				console.log(arguments);
-			}, this),
-			error: $.proxy(function(){
+		 method:'POST',
+		 url: "http://supportdetails.com/?sender_name=Jessica&sender=email@sender.com&recipient=" + this.options.info_recipient,
+		 success: $.proxy(function(){
+		 console.log(arguments);
+		 }, this),
+		 error: $.proxy(function(){
 
-			}, this)
-		});*/
+		 }, this)
+		 });*/
 	};
 
 	proto.isOldIE = function() {
@@ -108,11 +119,6 @@
 	};
 
 	var browserData = [
-		{ 	string: navigator.userAgent,
-			versionSearch: "OmniWeb/",
-			subString: "OmniWeb",
-			identity: "OmniWeb"
-		},
 		{
 			string: navigator.vendor,
 			versionSearch: "Version",
@@ -133,6 +139,17 @@
 		},
 		{
 			string: navigator.userAgent,
+			versionSearch: "MSIE",
+			subString: "MSIE",
+			identity: "Explorer"
+		},
+		{ 	string: navigator.userAgent,
+			versionSearch: "OmniWeb/",
+			subString: "OmniWeb",
+			identity: "OmniWeb"
+		},
+		{
+			string: navigator.userAgent,
 			versionSearch: "OPR",
 			subString: "OPR",
 			identity: "Opera"
@@ -148,12 +165,6 @@
 			versionSearch: "Chrome",
 			subString: "Chrome",
 			identity: "Chrome"
-		},
-		{
-			string: navigator.userAgent,
-			versionSearch: "MSIE",
-			subString: "MSIE",
-			identity: "Explorer"
 		}
 	];
 
@@ -193,8 +204,11 @@
 					break;
 				}
 
-				versionSearch = data[index].versionSearch || data[index].identity;
+				if(data[index].string == undefined) {
+					continue;
+				}
 
+				versionSearch = data[index].versionSearch || data[index].identity;
 				if (data[index].string.indexOf(data[index].subString) != -1) {
 					browser = data[index].identity;
 				}
