@@ -1,6 +1,6 @@
 /*
  * detectMe
- * Library to give you navigator and a lot of info about your browser
+ * Library that give you a lot of info about your browser and navigator
  * */
 (function($, window, document, undefined){
 	var DetectMe = function(){
@@ -85,19 +85,6 @@
 
 		return false;
 	};
-
-	/*var webkitOld = /(applewebkit\/[0-9.]*)+/i;
-	 var webkitOldVersion = 534.30;
-	 isOldBrowser = function(){
-	 var isOld = false;
-	 if(webkitOld.test(navigator.userAgent)){
-	 var match = navigator.userAgent.match(webkitOld)[1];
-	 var version = parseFloat(match.replace('AppleWebKit/', ''));
-	 if(version <= webkitOldVersion)
-	 isOld = true;
-	 }
-	 return isOld;
-	 };*/
 
 	proto.isNativeAndroid = function() {
 		if (this.options.simulate) {
