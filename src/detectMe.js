@@ -53,11 +53,11 @@
 		return this.name;
 	};
 
-	proto.setOpts = function(options) {
+	p.setOpts = function(options) {
 		this.options = $.extend({}, this.options, options);
 	};
 
-	proto.sendInfos = function(name, email){
+	p.sendInfos = function(name, email){
 		/* need info Nickname, Email */
 		/* will fetch browser info in php and send it to mail info */
 		//http://supportdetails.com/?sender_name=Jessica&sender=email@sender.com&recipient=email@recipient.com
@@ -89,19 +89,19 @@
 		 });*/
 	};
 
-	proto.isOldIE = function() {
+	p.isOldIE = function() {
 		if (this.options.simulate) {return true;}
 
 		return (this.data.browser == "Explorer" && this.data.version < 9);
 	};
 
-    proto.isOldSafari = function() {
+    p.isOldSafari = function() {
 		if (this.options.simulate) {return true;}
 
         return (this.data.browser == "Safari" && this.data.version < 6);
     };
 
-	proto.isOldBrowser = function() {
+	p.isOldBrowser = function() {
 		if (this.options.simulate) {return true;}
 
         if (this.isOldIE()) {return true}
@@ -110,7 +110,7 @@
 		return false;
 	};
 
-    proto.isIpad = function() {
+    p.isIpad = function() {
 		if (this.options.simulate) {return true;}
 
         if (this.data.os == "iPad"){
@@ -132,7 +132,7 @@
 	 return isOld;
 	 };*/
 
-	proto.isNativeAndroid = function() {
+	p.isNativeAndroid = function() {
 		if (this.options.simulate) {
 			return true;
 		}
