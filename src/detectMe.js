@@ -1,13 +1,16 @@
-/*
- * detectMe
- * Library to give you navigator and a lot of info about your browser
- * */
-(function($, window, document, undefined){
-	var DetectMe = function(){
+/**
+ * detectMe - Library that give you informations about your navigator
+ *
+ * Dependencies : jQuery, helpMe
+**/
+(function($, window, document, undefined) {
+	var DetectMeName = "detectMe";
+	var DetectMe = function() {
+		this.name = DetectMeName;
 		this.__construct();
 	};
 
-	var defaults = {
+	var defaultOptions = {
 		debug: false,
 		simulate: false,
 		test: false,
@@ -15,19 +18,39 @@
 	};
 	var versionSearch = null;
 
-	var proto = DetectMe.prototype;
+	var p = DetectMe.prototype;
 
-	proto.options = null;
+	p.name    = null;
+	p.options = null;
 
 	//--------Methods--------//
-	proto.__construct = function() {
-		this.options       = $.extend({}, defaults);
+	p.__construct = function() {
+		if (!this.__dependencies()) {
+			return this;
+		}
+		this.options       = Me.help.extend({}, defaultOptions);
 		this.userAgent     = navigator.userAgent;
 		this.navigator     = navigator;
 		this.data 	       = {};
 		this.data.browser  = privateMethods.searchString.call(this, browserData);
 		this.data.version  = privateMethods.searchVersion.call(this, this.userAgent, navigator.appVersion, versionSearch);
 		this.data.os       = privateMethods.searchString.call(this, osData);
+
+		return this;
+	};
+
+	p.__dependencies = function() {
+		var isOk = true;
+		if (!Me.help) {
+			console.warn(this.name + " :: " + "helpMe needed (https://github.com/QuatreCentQuatre/helpMe)");
+			isOk = false;
+		}
+
+		return isOk;
+	};
+
+	p.toString = function() {
+		return this.name;
 	};
 
 	proto.setOpts = function(options) {
@@ -67,24 +90,34 @@
 	};
 
 	proto.isOldIE = function() {
-		if (this.options.simulate) {
-			return true;
-		}
+		if (this.options.simulate) {return true;}
 
-		if (this.data.browser == "Explorer" && this.data.version < 9){
-			return true;
-		}
-
-		return false;
+		return (this.data.browser == "Explorer" && this.data.version < 9);
 	};
+
+    proto.isOldSafari = function() {
+		if (this.options.simulate) {return true;}
+
+        return (this.data.browser == "Safari" && this.data.version < 6);
+    };
 
 	proto.isOldBrowser = function() {
-		if (this.options.simulate) {
-			return true;
-		}
+		if (this.options.simulate) {return true;}
+
+        if (this.isOldIE()) {return true}
+        if (this.isOldSafari()) {return true}
 
 		return false;
 	};
+
+    proto.isIpad = function() {
+		if (this.options.simulate) {return true;}
+
+        if (this.data.os == "iPad"){
+            return true;
+        }
+        return false;
+    };
 
 	/*var webkitOld = /(applewebkit\/[0-9.]*)+/i;
 	 var webkitOldVersion = 534.30;
