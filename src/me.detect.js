@@ -1,13 +1,26 @@
 /**
  * DetectMe from the MeLibs
  * Library that let you easily check for browsers verification
+ *
+ * Version :
+ *  - 1.0.0
+ *
  * Dependencies :
  *  - Jquery
  *
  * Private Methods :
+ *  - searchString
+ *  - searchVersion
  *
  * Public Methods :
- *
+ *  - setOptions
+ *  - getOptions
+ *  - isOldIE
+ *  - isOldSafari
+ *  - isOldBrowser
+ *  - isIpad
+ *  - isNativeAndroid
+ *  - toString
  */
 
 (function($, window, document, undefined) {

@@ -1,7 +1,13 @@
-#detectMe 1.0 
+#detectMe
 
 Small library that gives you info about your users browser, and navigator.
 Can also be used to create function based on the user browser.
+
+---
+
+### Version
+
+**1.0.0**
 
 ---
 
