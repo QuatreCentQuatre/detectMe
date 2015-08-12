@@ -1,5 +1,5 @@
 /**
- * DetectMe from the MeLibs
+ * detectMe from the MeLibs
  * Library that let you easily check for browsers verification
  *
  * Version :

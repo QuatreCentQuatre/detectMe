@@ -13,7 +13,7 @@ Can also be used to create function based on the user browser.
 
 ### Dependencies
 
-**jQuery 1.9.1 ++** (http://jquery.com/download/)
+- **jQuery 1.9.1 ++** (http://jquery.com/download/)
 
 ---
 
