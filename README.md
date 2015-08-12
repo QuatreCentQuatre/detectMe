@@ -7,7 +7,7 @@ Can also be used to create function based on the user browser.
 
 ### Version
 
-**1.0.0**
+**1.0.1**
 
 ---
 

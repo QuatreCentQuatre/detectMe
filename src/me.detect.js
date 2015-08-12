@@ -3,7 +3,7 @@
  * Library that let you easily check for browsers verification
  *
  * Version :
- *  - 1.0.0
+ *  - 1.0.1
  *
  * Dependencies :
  *  - Jquery
