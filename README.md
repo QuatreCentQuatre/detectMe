@@ -1,13 +1,19 @@
-#detectMe 1.0 
+#detectMe
 
 Small library that gives you info about your users browser, and navigator.
 Can also be used to create function based on the user browser.
 
 ---
 
+### Version
+
+**1.0.1**
+
+---
+
 ### Dependencies
 
-**jQuery 1.9.1 ++** (http://jquery.com/download/)
+- **jQuery 1.9.1 ++** (http://jquery.com/download/)
 
 ---
 
