@@ -1,12 +1,21 @@
 /**
- * DetectMe from the MeLibs
+ * DetectMe 1.0.3 (https://github.com/QuatreCentQuatre/detectMe/)
  * Library that let you easily check for browsers verification
- * Dependencies :
- *  - Jquery
  *
- * Private Methods :
+ * Licence : GLP v2
  *
- * Public Methods :
+ * Methods :
+ *  - Constructor :
+ *  	- __construct : inital method
+ *  	- __dependencies : check any dependencies support and send some errors
+ *
+ * 	- Public :
+ * 		-
+ *
+ * 	- Private :
+ *		-
+ *
+ * Updates Needed :
  *
  */
 
@@ -182,6 +191,7 @@
 	};
 	var proto = DetectMe.prototype;
 
+	/* -------- DEFAULTS OPTIONS ------- */
 	proto.debug          = null;
 	proto.id             = null;
 	proto.name           = null;
@@ -203,7 +213,7 @@
 		this.dname = this.name + ":: ";
 		this.setOptions(options);
 
-		if (!this.__validateDependencies()) {return null;}
+		if (!this.__dependencies()) {return null;}
 		if (!this.__validateOptions()) {return null;}
 		instanceID ++;
 
@@ -213,14 +223,14 @@
 
 	/**
 	 *
-	 * __validateDependencies
+	 * __dependencies
 	 * Will check if you got all the dependencies needed to use that plugins
 	 *
 	 * @return  boolean
 	 * @access  private
 	 *
 	 */
-	proto.__validateDependencies = function() {
+	proto.__dependencies = function() {
 		var isValid = true;
 		if (!window.jQuery) {
 			isValid = false;
