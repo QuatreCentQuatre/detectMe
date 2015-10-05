@@ -185,8 +185,8 @@
 	};
 
 	/* Builder Method */
-	var DetectMe = function(options) {
-		this.__construct(options);
+	var DetectMe = function() {
+		this.__construct();
 	};
 	var proto = DetectMe.prototype;
 
@@ -243,7 +243,7 @@
 
 	/**
 	 *
-	 * __dependencies
+	 * __validateDependencies
 	 * Will check if you got all the dependencies needed to use that plugins
 	 *
 	 * @return  boolean
@@ -263,7 +263,7 @@
 
 	/**
 	 *
-	 * __validateOptions
+	 * __validateArguments
 	 * Will check if you got all the required options needed to use that plugins
 	 *
 	 * @return  boolean
