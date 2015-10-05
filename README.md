@@ -1,4 +1,4 @@
-#detectMe
+#DetectMe
 
 Small library that gives you info about your users browser, and navigator.
 Can also be used to create function based on the user browser.
@@ -7,19 +7,19 @@ Can also be used to create function based on the user browser.
 
 ### Version
 
-**1.0.1**
+**1.0.3**
 
 ---
 
 ### Dependencies
 
-- **jQuery 1.9.1 ++** (http://jquery.com/download/)
+- **jQuery 1.9.1 ++** (https://jquery.com/download/)
 
 ---
 
 ### Getting Started
 
-Place the **detectMe.js** file in your default JavaScript vendor directory. Link the script before the end of your **body** and after **jquery.js**.
+Place the **me.detect.js** file in your default JavaScript vendor directory. Link the script before the end of your **body** and after **jquery.js**.
 
 ```
 <script src="js/vendor/jquery-1.9.1.min.js"></script>

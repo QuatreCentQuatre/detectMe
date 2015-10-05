@@ -1,26 +1,40 @@
 /**
- * DetectMe 1.0.3 (https://github.com/QuatreCentQuatre/detectMe/)
- * Library that let you easily check for browsers verification
+ * DetectMe from the MeLibs (https://github.com/QuatreCentQuatre/detectMe/)
+ * Library that let you easily check for browsers verifications
  *
- * Licence : GLP v2
+ * Licence :
+ * - GLP v2
  *
- * Methods :
- *  - Constructor :
- *  	- __construct : inital method
- *  	- __dependencies : check any dependencies support and send some errors
+ * Version :
+ *	- 1.0.3
  *
- * 	- Public :
- * 		-
+ * Dependencies :
+ *  - jQuery (https://jquery.com/)
  *
- * 	- Private :
- *		-
+ * Public Methods :
+ * 	- setOptions
+ *	- getOptions
+ *
+ *  - isOldBrowser
+ *  - isOldIE
+ *  - isOldSafari
+ *  - isIpad
+ *
+ * Private Methods :
+ * 	- searchString
+ * 	- searchVersion
+ *
  *
  * Updates Needed :
+ *  - isNativeAndroid
+ *  - sendBrowserInfoRemote (send info of the browser to a remote tier)
+ *  - get other infos in php
  *
  */
 
 (function($, window, document, undefined) {
 	"use strict";
+
 	/* Private Variables */
 	var instanceID   = 1;
 	var instanceName = "DetectMe";
@@ -28,7 +42,7 @@
 		debug: false,
 		simulate: false,
 		test: false,
-		info_recipient: 'samuel@quatrecentquatre.com'
+		info_recipient: ''
 	};
 	var overwriteKeys = [
 		'debug',
@@ -142,14 +156,11 @@
 	 */
 	privatesMethods.searchString = function(data) {
 		var browser = null;
-		for (var index in data)	{
-			if (browser) {
-				break;
-			}
 
-			if(data[index].string == undefined) {
-				continue;
-			}
+		for (var index in data)	{
+            if (browser) {break;}
+
+			if(data[index].string == undefined) {continue;}
 
 			versionSearch = data[index].versionSearch || data[index].identity;
 			if (data[index].string.indexOf(data[index].subString) != -1) {
@@ -158,6 +169,7 @@
 		}
 
 		if(!browser) {browser = "Unknown";}
+
 		return browser;
 	};
 
@@ -173,6 +185,7 @@
 	 */
 	privatesMethods.searchVersion = function(userAgent, appVersion, versionSearch) {
 		var version = null;
+
 		if (version == null && userAgent.indexOf(versionSearch) != -1) {
 			version = parseFloat(userAgent.substring(userAgent.indexOf(versionSearch) + versionSearch.length + 1));
 		}
@@ -182,6 +195,7 @@
 		}
 
 		if (!version) {version = -1;}
+
 		return version;
 	};
 
@@ -191,12 +205,14 @@
 	};
 	var proto = DetectMe.prototype;
 
-	/* -------- DEFAULTS OPTIONS ------- */
-	proto.debug          = null;
-	proto.id             = null;
-	proto.name           = null;
-	proto.dname          = null;
-	proto.options        = null;
+	/* Private Variables */
+	proto.__id          = null;
+	proto.__name        = null;
+	proto.__debugName   = null;
+
+	/* Publics Variables */
+	proto.debug         = null;
+	proto.options       = null;
 
 	/**
 	 *
@@ -208,17 +224,36 @@
 	 * @access  private
 	 */
 	proto.__construct = function(options) {
-		this.id    = instanceID;
-		this.name  = instanceName;
-		this.dname = this.name + ":: ";
+		this.__id    	 = instanceID;
+		this.__name  	 = instanceName;
+		this.__debugName = this.__name + ":: ";
+
 		this.setOptions(options);
 
-		if (!this.__dependencies()) {return null;}
-		if (!this.__validateOptions()) {return null;}
-		instanceID ++;
+		if (!this.__validateDependencies()) {return null;}
+		if (!this.__validateArguments()) {return null;}
 
+		instanceID ++;
 		this.__initialize();
 		return this;
+	};
+
+	/**
+	 *
+	 * __initialize
+	 * set the basics
+	 *
+	 * @return  object scope
+	 * @access  private
+	 *
+	 */
+	proto.__initialize = function() {
+		this.userAgent     = navigator.userAgent;
+		this.navigator     = navigator;
+		this.data 	       = {};
+		this.data.browser  = privatesMethods.searchString.call(this, browserData);
+		this.data.version  = privatesMethods.searchVersion.call(this, this.userAgent, navigator.appVersion, versionSearch);
+		this.data.os       = privatesMethods.searchString.call(this, osData);
 	};
 
 	/**
@@ -230,12 +265,14 @@
 	 * @access  private
 	 *
 	 */
-	proto.__dependencies = function() {
+	proto.__validateDependencies = function() {
 		var isValid = true;
+
 		if (!window.jQuery) {
 			isValid = false;
-			console.warn(this.dname + "You need jquery");
+			console.warn(this.__debugName + "You need jquery");
 		}
+
 		return isValid;
 	};
 
@@ -248,7 +285,7 @@
 	 * @access  private
 	 *
 	 */
-	proto.__validateOptions = function() {
+	proto.__validateArguments = function() {
 		var isValid = true;
 		return isValid;
 	};
@@ -289,15 +326,6 @@
 		return this.options;
 	};
 
-	proto.__initialize = function() {
-		this.userAgent     = navigator.userAgent;
-		this.navigator     = navigator;
-		this.data 	       = {};
-		this.data.browser  = privatesMethods.searchString.call(this, browserData);
-		this.data.version  = privatesMethods.searchVersion.call(this, this.userAgent, navigator.appVersion, versionSearch);
-		this.data.os       = privatesMethods.searchString.call(this, osData);
-	};
-
 	proto.isOldIE = function() {
 		if (this.options.simulate) {return true;}
 
@@ -326,64 +354,45 @@
 		return false;
 	};
 
-	/*var webkitOld = /(applewebkit\/[0-9.]*)+/i;
-	 var webkitOldVersion = 534.30;
-	 isOldBrowser = function(){
-	 var isOld = false;
-	 if(webkitOld.test(navigator.userAgent)){
-	 var match = navigator.userAgent.match(webkitOld)[1];
-	 var version = parseFloat(match.replace('AppleWebKit/', ''));
-	 if(version <= webkitOldVersion)
-	 isOld = true;
-	 }
-	 return isOld;
-	 };*/
-
-	proto.isNativeAndroid = function() {
-		if(this.options.simulate){return true;}
-
-		return false;
-	};
-
-
 	//proto.sendBrowserInfoRemote = function(name, email) {
-		/* need info Nickname, Email */
-		/* will fetch browser info in php and send it to mail info */
-		//http://supportdetails.com/?sender_name=Jessica&sender=email@sender.com&recipient=email@recipient.com
-		//http://www.formspree.com/
+	/* need info Nickname, Email */
+	/* will fetch browser info in php and send it to mail info */
+	//http://supportdetails.com/?sender_name=Jessica&sender=email@sender.com&recipient=email@recipient.com
+	//http://www.formspree.com/
 
-		/*
-		 export_detail[name]	Jessica
-		 export_detail[from_email]	email@sender.com
-		 export_detail[to_email]	email@recipient.com
-		 export_detail[javascript]	1
-		 export_detail[cookies]	true
-		 export_detail[browser_type]	Firefox
-		 export_detail[browser_version]	27.0
-		 export_detail[color_depth]	24
-		 export_detail[screen_resolution]	1920 x 1200
-		 export_detail[browser_size]	1920 x 1038
-		 export_detail[flash_version]	12.0.-1
-		 export_detail[full_flash_version]
-		 */
-		/*$.ajax({
-		 method:'POST',
-		 url: "http://supportdetails.com/?sender_name=Jessica&sender=email@sender.com&recipient=" + this.options.info_recipient,
-		 success: $.proxy(function(){
-		 console.log(arguments);
-		 }, this),
-		 error: $.proxy(function(){
+	/*
+	 export_detail[name]	Jessica
+	 export_detail[from_email]	email@sender.com
+	 export_detail[to_email]	email@recipient.com
+	 export_detail[javascript]	1
+	 export_detail[cookies]	true
+	 export_detail[browser_type]	Firefox
+	 export_detail[browser_version]	27.0
+	 export_detail[color_depth]	24
+	 export_detail[screen_resolution]	1920 x 1200
+	 export_detail[browser_size]	1920 x 1038
+	 export_detail[flash_version]	12.0.-1
+	 export_detail[full_flash_version]
+	 */
+	/*$.ajax({
+	 method:'POST',
+	 url: "http://supportdetails.com/?sender_name=Jessica&sender=email@sender.com&recipient=" + this.options.info_recipient,
+	 success: $.proxy(function(){
+	 console.log(arguments);
+	 }, this),
+	 error: $.proxy(function(){
 
-		 }, this)
-		 });*/
+	 }, this)
+	 });*/
 	//};
 
 	proto.toString = function(){
-		return "[" + this.name + "]";
+		return "[" + this.__name + "]";
 	};
 
 	/* Create Me reference if does'nt exist */
 	if(!window.Me){window.Me = {};}
+
 	/* Initiate to make a Singleton */
 	Me.detect = new DetectMe();
 }(jQuery, window, document));
