@@ -40,26 +40,11 @@
 	var instanceName = "DetectMe";
 	var defaults     = {
 		debug: false,
-		simulate: false,
-		test: false,
-		info_recipient: ''
+		simulate: false
 	};
 	var overwriteKeys = [
 		'debug',
-		'$messages',
-		'$btn',
-		'form_scope',
-		'fields',
-		'disabled',
-		'accepted_empty',
-		'onValidationError',
-		'onValidationSuccess',
-		'handleValidationErrorField',
-		'handleValidationSuccessField',
-		'onAllSuccess',
-		'onAllError',
-		'onSuccess',
-		'onError'
+        'simulate'
 	];
 	var versionSearch = null;
 
@@ -290,41 +275,44 @@
 		return isValid;
 	};
 
-	/**
-	 *
-	 * setOptions
-	 * will merge options to the plugin defaultKeys and the rest will be set as additionnal options
-	 *
-	 * @param   options
-	 * @return  object scope
-	 * @access  public
-	 *
-	 */
-	proto.setOptions = function(options) {
-		var $scope = this;
-		var settings = $.extend({}, defaults, options);
-		$.each(settings, function(index, value) {
-			if ($.inArray(index, overwriteKeys) != -1) {
-				$scope[index] = value;
-				delete settings[index];
-			}
-		});
-		this.options = settings;
-		return this;
-	};
+    /**
+     *
+     * setOptions
+     * will merge options to the plugin defaultKeys and the rest will be set as additionnal options
+     *
+     * @param   options
+     * @return  object scope
+     * @access  public
+     *
+     */
+    proto.setOptions = function(options) {
+        var scope    = this;
+        var settings = (this.options) ? $.extend({}, this.options, options) : $.extend({}, defaults, options);
 
-	/**
-	 *
-	 * getOptions
-	 * return the additional options that left
-	 *
-	 * @return  object options
-	 * @access  public
-	 *
-	 */
-	proto.getOptions = function() {
-		return this.options;
-	};
+        $.each(settings, function(index, value) {
+            if ($.inArray(index, overwriteKeys) != -1) {
+                scope[index] = value;
+                delete settings[index];
+            }
+        });
+
+        this.options = settings;
+
+        return this;
+    };
+
+    /**
+     *
+     * getOptions
+     * return the additional options that left
+     *
+     * @return  object options
+     * @access  public
+     *
+     */
+    proto.getOptions = function() {
+        return this.options;
+    };
 
 	proto.isOldIE = function() {
 		if (this.options.simulate) {return true;}
