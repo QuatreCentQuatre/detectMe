@@ -315,19 +315,19 @@
     };
 
 	proto.isOldIE = function() {
-		if (this.options.simulate) {return true;}
+		if (this.simulate) {return true;}
 
 		return (this.data.browser == "Explorer" && this.data.version < 9);
 	};
 
 	proto.isOldSafari = function() {
-		if (this.options.simulate) {return true;}
+		if (this.simulate) {return true;}
 
 		return (this.data.browser == "Safari" && this.data.version < 6);
 	};
 
 	proto.isOldBrowser = function() {
-		if (this.options.simulate) {return true;}
+		if (this.simulate) {return true;}
 
 		if (this.isOldIE()) {return true}
 		if (this.isOldSafari()) {return true}
@@ -336,7 +336,7 @@
 	};
 
 	proto.isIpad = function() {
-		if (this.options.simulate) {return true;}
+		if (this.simulate) {return true;}
 
 		if (this.data.os == "iPad"){return true;}
 		return false;
