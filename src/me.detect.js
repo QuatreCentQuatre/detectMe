@@ -32,7 +32,7 @@
  *
  */
 
-(function($, window, document, undefined) {
+(function(jQuery, window, document, undefined) {
 	"use strict";
 
 	/* Private Variables */
